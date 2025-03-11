@@ -1,0 +1,8 @@
+[project]
+name = "github-activity"
+version = "0.1.0"
+description = "Simple CLI tool to fetch Github Activity"
+requires-python = ">=3.13"
+dependencies = [
+    "requests>=2.32.3",
+]
