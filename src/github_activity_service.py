@@ -1,5 +1,4 @@
 import requests
-from pprint import pprint
 
 GITHUBAPI_URL: str = "https://api.github.com/users/{username}/events?per_page={limit}"
 ACTIVITY_TYPE = dict[str, dict[str, list[dict]]]
@@ -44,54 +43,34 @@ def parse_push_events(activity: ACTIVITY_TYPE) -> str:
 
     return parsed_push_events
 
-def parse_issue_events(activity: ACTIVITY_TYPE) -> str:
-    parsed_issue_events: str = ""
-    for repo in activity:
-        for event in activity[repo].get('Event', []):
-            match event['action']:
-                case "opened":
-                    parsed_issue_events += f"- Opened Issue #{event['issue']['number']} in {repo}\n"
-                case "closed":
-                    parsed_issue_events += f"- Closed Issue #{event['issue']['number']} in {repo}\n"
-                case "reopened":
-                    parsed_issue_events += f"- Reopened Issue #{event['issue']['number']} in {repo}\n"
-                case _:
-                    parsed_issue_events += f"- Updated Issue #{event['issue']['number']} in {repo}\n"
+def parse_issue_event(event: dict) -> str:
+    match event['action']:
+        case "opened":
+            return f"- Opened Issue #{event['issue']['number']}"
+        case "closed":
+            return f"- Closed Issue #{event['issue']['number']}"
+        case "reopened":
+            return f"- Reopened Issue #{event['issue']['number']}"
+        case _:
+            return f"- Updated Issue #{event['issue']['number']}"
 
-    return parsed_issue_events
-
-def parse_issuecomment_events(activity: ACTIVITY_TYPE) -> str:
-    """TODO"""
-
-def parse_create_events(activity: ACTIVITY_TYPE) -> str:
-    """TODO"""
-
-def parse_member_events(activity: ACTIVITY_TYPE) -> str:
-    """TODO"""
+def parse_issuecomment_event(event: dict) -> str:
+    match event['action']:
+        case "created":
+            return f"- Commented on Issue #{event['issue']['number']}"
+        case _:
+            return f"- Updated Comment on Issue #{event['issue']['number']}"
 
 
-# list all distinct events
-def list_events(activity: ACTIVITY_TYPE) -> str:
-    events: set[str] = set()
-    for repo in activity:
-        for event in activity[repo]:
-            events.add(event)
+def parse_member_event(event: dict) -> str:
+    match event['action']:
+        case "added":
+            return f"- Added {event['member']['login']}"
+        case _:
+            return f"- Removed {event['member']['login']}"
 
-    return "\n".join(events)
-
-def get_payload(activity: ACTIVITY_TYPE, event_type: str) :
-    for repo in activity:
-        for event in activity[repo]:
-            if event == event_type:
-                return activity[repo][event]
-
-def main():
-    activity = fetch_github_activity("IAmJafeth", 100)
-    parsed_activity = parse_github_activity(activity)
-    pushed_events = parse_push_events(parsed_activity)
-    print(list_events(parsed_activity))
-    pprint(get_payload(parsed_activity, "IssuesEvent"))
-
-
-if __name__ == '__main__':
-    main()
+def parse_create_event(event: dict, repo_name: str) -> str:
+    if event["ref_type"] == "repository":
+        return f"- Created Repository {repo_name}"
+    else:
+        return f"- Created {event['ref_type']} {event['ref']} in {repo_name}"
