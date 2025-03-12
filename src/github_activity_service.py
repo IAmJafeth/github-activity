@@ -45,7 +45,20 @@ def parse_push_events(activity: ACTIVITY_TYPE) -> str:
     return parsed_push_events
 
 def parse_issue_events(activity: ACTIVITY_TYPE) -> str:
-    """TODO"""
+    parsed_issue_events: str = ""
+    for repo in activity:
+        for event in activity[repo].get('Event', []):
+            match event['action']:
+                case "opened":
+                    parsed_issue_events += f"- Opened Issue #{event['issue']['number']} in {repo}\n"
+                case "closed":
+                    parsed_issue_events += f"- Closed Issue #{event['issue']['number']} in {repo}\n"
+                case "reopened":
+                    parsed_issue_events += f"- Reopened Issue #{event['issue']['number']} in {repo}\n"
+                case _:
+                    parsed_issue_events += f"- Updated Issue #{event['issue']['number']} in {repo}\n"
+
+    return parsed_issue_events
 
 def parse_issuecomment_events(activity: ACTIVITY_TYPE) -> str:
     """TODO"""
