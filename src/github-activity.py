@@ -9,7 +9,7 @@ def main():
     try:
         raw_activity = github_activity_service.fetch_github_activity(args.gh_user, args.limit)
     except Exception as e:
-        parser.exit(status=1, message=str(e))
+        parser.exit(status=1)
 
     activity = github_activity_service.parse_github_activity(raw_activity)
 
