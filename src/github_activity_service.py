@@ -5,11 +5,25 @@ ACTIVITY_TYPE = dict[str, dict[str, list[dict]]]
 
 
 def fetch_github_activity(username: str, limit: int) -> list[dict]:
-    return requests.get(GITHUBAPI_URL.format(username=username, limit=limit)).json()
+    try:
+        response = requests.get(GITHUBAPI_URL.format(username=username, limit=limit))
+    except requests.exceptions.RequestException as e:
+        print("Unable to fetch GitHub activity, check your internet connection.")
+        raise e
+
+    if response.status_code == 404:
+        print("Username", username, "not found")
+        raise requests.exceptions.RequestException("Username not found")
+    elif 500 <= response.status_code <= 511:
+        print("Server error", response.status_code)
+        raise requests.exceptions.RequestException("Server error")
+
+    return response.json()
 
 
 def parse_github_activity(github_http_response: list[dict]) -> ACTIVITY_TYPE:
     activity: ACTIVITY_TYPE = {}
+
     for event in github_http_response:
         repo_name = event['repo']['name']
         if activity.get(repo_name) is None:

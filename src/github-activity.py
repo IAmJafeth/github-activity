@@ -6,7 +6,11 @@ def main():
     parser = parser_service.get_parser()
     args = parser.parse_args()
 
-    raw_activity = github_activity_service.fetch_github_activity(args.gh_user, args.limit)
+    try:
+        raw_activity = github_activity_service.fetch_github_activity(args.gh_user, args.limit)
+    except Exception as e:
+        parser.exit(status=1, message=str(e))
+
     activity = github_activity_service.parse_github_activity(raw_activity)
 
     parsed_events = ""
