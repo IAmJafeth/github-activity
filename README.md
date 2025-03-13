@@ -1,7 +1,5 @@
 # [GitHub Activity CLI](https://roadmap.sh/projects/github-user-activity)
 
-![Work in Progress](https://img.shields.io/badge/status-work%20in%20progress-yellow)
-
 ## Overview
 This project is a simple command-line interface (CLI) application that fetches and displays the recent activity of a specified GitHub user. It helps practice working with APIs, handling JSON data, and building CLI applications.
 
