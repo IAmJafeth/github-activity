@@ -11,6 +11,22 @@ This project is a simple command-line interface (CLI) application that fetches a
 - Built without external libraries or frameworks for API requests.
 
 ## Usage
+
+Clone the repository:
+```sh
+git clone https://github.com/IAmJafeth/github-activity.git
+```
+
+Navigate to the project directory:
+```sh
+cd github-activity
+```
+
+Install the packages:
+```sh
+pip install .
+````
+
 Run the CLI with a GitHub username as an argument:
 ```sh
 github-activity <username>
