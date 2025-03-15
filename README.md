@@ -12,6 +12,15 @@ This project is a simple command-line interface (CLI) application that fetches a
 
 ## Usage
 
+### Install Remotely:
+
+Install the package from the repository:
+```sh
+pip install git+https://github.com/IAmJafeth/github-activity.git
+```
+
+### Install Locally:
+
 Clone the repository:
 ```sh
 git clone https://github.com/IAmJafeth/github-activity.git
@@ -27,9 +36,11 @@ Install the packages:
 pip install .
 ````
 
+### Run the CLI:
+
 Run the CLI with a GitHub username as an argument:
 ```sh
-github-activity <username>
+github-activity <username> -l <limit>
 ```
 
 ## Example Output
