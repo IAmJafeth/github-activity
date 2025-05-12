@@ -60,7 +60,7 @@ Example:
 https://api.github.com/users/iamjafeth/events
 ```
 
-## Future Enhancements
+## Future Enhancements c:
 For an advanced version, consider adding:
 - Filtering activity by event type.
 - Structured output formatting.
